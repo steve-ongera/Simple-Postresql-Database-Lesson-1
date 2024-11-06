@@ -1,13 +1,11 @@
-# Simple Postresql Database Lesson 1
+# Simple Postresql Database User Management System
 
 ## Overview
-This is a simple user management system implemented in PostgreSQL. The system maintains a database of users with their basic information including usernames and ages.
+This is a simple user management system implemented in PostgreSQL. The system maintains a database of users with their basic information including usernames and ages, with support for schema modifications.
 
 ## Database Schema
 
-### Users Table
-The system uses a single table with the following structure:
-
+### Users Table Initial Structure
 | Column Name | Data Type | Description |
 |------------|-----------|-------------|
 | username | VARCHAR(200) | User's unique identifier |
@@ -48,10 +46,51 @@ UPDATE users
     WHERE username='gadafi';
 ```
 
-#### Retrieving User Data
+### Schema Modifications
+
+#### Adding Columns
 ```sql
-SELECT * 
-FROM users;
+-- Add email column
+ALTER TABLE users ADD COLUMN email VARCHAR(255);
+
+-- Add email column with default value
+ALTER TABLE users ADD COLUMN email VARCHAR(255) DEFAULT 'example@example.com';
+```
+
+#### Removing Columns
+```sql
+-- Drop email column
+ALTER TABLE users DROP COLUMN email;
+```
+
+#### Renaming Elements
+```sql
+-- Rename table
+ALTER TABLE users RENAME TO cars;
+
+-- Rename column
+ALTER TABLE users RENAME COLUMN username TO student_name;
+```
+
+### Data Querying
+
+#### Retrieve Users by Age Range
+```sql
+SELECT username, age
+FROM users
+WHERE age >= 10 AND age <= 27;
+```
+
+### Data Cleanup Operations
+
+#### Truncate Table
+```sql
+TRUNCATE TABLE users;
+```
+
+#### Drop Table
+```sql
+DROP TABLE users;
 ```
 
 ## Sample Data
@@ -67,6 +106,7 @@ The system comes pre-populated with the following sample users:
 ### Data Constraints
 - Username: Maximum length of 200 characters
 - Age: Integer values only
+- Email (when added): Maximum length of 255 characters
 
 ## Getting Started
 
@@ -80,25 +120,53 @@ The system comes pre-populated with the following sample users:
 3. Execute the table creation SQL command
 4. Run the insert commands to populate initial data
 
-## Usage Examples
+## Common Operations
 
-### Adding a New User
+### Adding Email to Existing Table
 ```sql
-INSERT INTO users (username, age)
-VALUES ('new_user', 25);
+ALTER TABLE users ADD COLUMN email VARCHAR(255) DEFAULT 'example@example.com';
 ```
 
-### Updating User Age
+### Querying Users Within Age Range
 ```sql
-UPDATE users
-SET age = 26
-WHERE username = 'new_user';
+SELECT username, age
+FROM users
+WHERE age >= 10 AND age <= 27;
 ```
 
-### Retrieving All Users
+### Cleaning Up Database
 ```sql
-SELECT * FROM users;
+-- To remove all data but keep structure
+TRUNCATE TABLE users;
+
+-- To completely remove table
+DROP TABLE users;
 ```
+
+### Renaming Database Elements
+```sql
+-- Rename table
+ALTER TABLE users RENAME TO cars;
+
+-- Rename column
+ALTER TABLE users RENAME COLUMN username TO student_name;
+```
+
+## Important Notes
+1. The table structure is flexible and can be modified using ALTER TABLE commands
+2. Data can be completely removed using TRUNCATE TABLE
+3. The entire table can be dropped using DROP TABLE
+4. Column names and table names can be renamed as needed
+5. Default values can be specified when adding new columns
+
+## Future Improvements
+1. Add primary key constraint to username
+2. Include additional user information
+3. Add data validation constraints
+4. Implement user authentication
+5. Add timestamp columns for record tracking
+6. Implement foreign key relationships
+7. Add indexing for better query performance
 
 ## Contributing
 Feel free to submit issues and enhancement requests.
@@ -106,12 +174,11 @@ Feel free to submit issues and enhancement requests.
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Future Improvements
-1. Add primary key constraint to username
-2. Include additional user information (email, full name, etc.)
-3. Add data validation constraints
-4. Implement user authentication
-5. Add timestamp columns for record tracking
-
 ## Support
 For support, please create an issue in the repository or contact the database administrator.
+
+## Version History
+- v1.0: Initial table creation with username and age
+- v1.1: Added support for email column
+- v1.2: Added table and column renaming capabilities
+- v1.3: Added data cleanup operations
